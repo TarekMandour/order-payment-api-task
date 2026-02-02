@@ -1,59 +1,88 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+## Order & Payment API Documentation (Laravel 12)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This document provides a full enterprise-level technical documentation for the Order & Payment API built using Laravel 12.<br>
+It is designed to demonstrate real-world backend architecture, payment orchestration, inventory reservation, and scalability concepts.
 
-## About Laravel
+## 1. System Architecture
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+The system follows a layered architecture:
+- **Controllers orchestrate request flows.**
+- **Services encapsulate business logic.**
+- **Payment Gateways implement payment-specific behaviors.**
+- **Middleware standardizes API responses.**
+- **Database transactions ensure consistency.**
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 2. Payment Processing Design
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+The system supports multiple payment methods through the Strategy Pattern.
+Each payment method implements a common interface, allowing new methods to be added without modifying checkout logic.
 
-## Learning Laravel
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## 3. Apple Pay Flow
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Apple Pay is treated as a native synchronous payment method.
+The mobile application handles user authorization, while the backend validates and finalizes the payment immediately.
 
-## Laravel Sponsors
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## 4. Credit Card Flow
 
-### Premium Partners
+Credit card payments follow an asynchronous redirect-based flow.
+The backend initiates the payment and returns a payment URL, which is opened in a WebView.
+Payment confirmation is received via webhook callbacks.
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
 
-## Contributing
+## 5. API Response Standardization
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+All API responses are wrapped using traits and requests to ensure consistency.
+This simplifies frontend integration and improves error handling.
 
-## Code of Conduct
+## 6. Tech Stack
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- PHP 8.2+
+- Laravel 12
+- MySQL / SQLite (testing)
+- JWT Authentication (tymon/jwt-auth)
+- PHPUnit
 
-## Security Vulnerabilities
+## 7. Installation
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+git clone [https://github.com/TarekMandour/order-payment-api-task.git](https://github.com/TarekMandour/order-payment-api-task.git)<br>
+cd order-payment-api-task<br>
+composer install<br>
+cp .env.example .env<br>
+php artisan key:generate<br>
+php artisan jwt:secret<br>
+php artisan migrate --seed<br>
+php artisan serve<br>
 
-## License
+## Testing Environment
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+cp .env.example .env.testing<br>
+
+APP_ENV=testing<br>
+APP_KEY=<br>
+DB_CONNECTION=sqlite<br>
+DB_DATABASE=:memory:<br>
+QUEUE_CONNECTION=sync<br>
+CACHE_DRIVER=array<br>
+JWT_SECRET=<br>
+
+php artisan key:generate --env=testing<br>
+php artisan jwt:secret --env=testing<br>
+
+## 8. HTTP Status Codes
+This API uses standard HTTP status codes consistently to clearly communicate request outcomes.
+
+| Code                      | Meaning                   | When Used                 |
+| --------------            | --------------------      | ------------------------- |
+| 200 OK                    | Request succeeded         | Successful GET, POST, PUT |
+| 400 Bad Request           | Invalid request           | Malformed payload         |
+| 401 Unauthorized          | Authentication required   | Missing / invalid JWT     |
+| 403 Forbidden             | Access denied             | Invalid or expired OTP    |
+| 404 Not Found             | Resource not found        | Order / User not found    |
+| 409 Conflict              | Business rule violation   | Deleting paid order       |
+| 422 Unprocessable Entity  | Validation error          | Invalid input data        |
+
+
+
+
