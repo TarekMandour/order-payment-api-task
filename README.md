@@ -53,6 +53,7 @@ cp .env.example .env<br>
 php artisan key:generate<br>
 php artisan jwt:secret<br>
 php artisan migrate --seed<br>
+
 php artisan serve<br>
 
 ## Testing Environment
@@ -69,6 +70,8 @@ JWT_SECRET=<br>
 
 php artisan key:generate --env=testing<br>
 php artisan jwt:secret --env=testing<br>
+
+php artisan test<br>
 
 ## 8. HTTP Status Codes
 This API uses standard HTTP status codes consistently to clearly communicate request outcomes.
