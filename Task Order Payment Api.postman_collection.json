@@ -1,0 +1,493 @@
+{
+  "info": {
+    "_postman_id": "31e12816-96ce-4830-a254-3f6a9676a008",
+    "name": "Task Order Payment Api",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "8510112"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "phone",
+                  "value": "201006287379",
+                  "type": "text",
+                  "uuid": "09be73f8-f52a-460a-8894-6c1a8fb44d5e"
+                },
+                {
+                  "key": "password",
+                  "value": "12345678",
+                  "type": "text",
+                  "uuid": "3c5b8295-0d1a-44bc-95bf-fc48bc3c9ae5"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{local}}/auth/login",
+              "host": [
+                "{{local}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "tarek",
+                  "type": "text",
+                  "uuid": "1e8d47c9-6b44-47b7-968f-0651b70c7805"
+                },
+                {
+                  "key": "phone",
+                  "value": "201006287379",
+                  "type": "text",
+                  "uuid": "fc8c980e-230d-4845-86a0-41955c833d63"
+                },
+                {
+                  "key": "password",
+                  "value": "12345678",
+                  "type": "text",
+                  "uuid": "7e0ed5e3-c1aa-4feb-a1f8-1035a9477c06"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{local}}/auth/register",
+              "host": [
+                "{{local}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Profile",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{local}}/auth/profile",
+              "host": [
+                "{{local}}"
+              ],
+              "path": [
+                "auth",
+                "profile"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Check Phone",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "phone",
+                  "value": "201006287379",
+                  "type": "text",
+                  "uuid": "d58e199d-c618-44c9-bacc-9b712d1a1247"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{local}}/auth/check-phone",
+              "host": [
+                "{{local}}"
+              ],
+              "path": [
+                "auth",
+                "check-phone"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Verify Otp",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "phone",
+                  "value": "201006287379",
+                  "type": "text",
+                  "uuid": "9f633fa0-f84d-4fcc-a634-25cca990d3f9"
+                },
+                {
+                  "key": "otp",
+                  "value": "7049",
+                  "type": "text",
+                  "uuid": "fa853315-f68b-4e0a-99e5-2114b762938d"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{local}}/auth/verify-otp",
+              "host": [
+                "{{local}}"
+              ],
+              "path": [
+                "auth",
+                "verify-otp"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{local}}/auth/logout",
+              "host": [
+                "{{local}}"
+              ],
+              "path": [
+                "auth",
+                "logout"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Orders",
+      "item": [
+        {
+          "name": "List",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{local}}/order/list?order_status=confirmed",
+              "host": [
+                "{{local}}"
+              ],
+              "path": [
+                "order",
+                "list"
+              ],
+              "query": [
+                {
+                  "key": "order_status",
+                  "value": "confirmed",
+                  "description": "pending, confirmed, cancelled",
+                  "type": "text"
+                },
+                {
+                  "key": "payment_status",
+                  "value": "",
+                  "description": "pending, successful, failed",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "",
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Checkout",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "items[0][product_name]",
+                  "value": "gold",
+                  "type": "text",
+                  "uuid": "5bbc08a4-70ed-472b-b2f4-a63efd7ebe23"
+                },
+                {
+                  "key": "items[0][quantity]",
+                  "value": "1",
+                  "type": "text",
+                  "uuid": "e7457a13-7487-4adf-b5aa-250b028ef2d9"
+                },
+                {
+                  "key": "items[0][price]",
+                  "value": "4895",
+                  "type": "text",
+                  "uuid": "39b48519-7ca2-47bf-911e-4a7784e9cd8a"
+                },
+                {
+                  "key": "items[1][product_name]",
+                  "value": "Silver",
+                  "type": "text",
+                  "uuid": "85ca2a21-5ee5-401a-bfdc-9f8b96050dbf"
+                },
+                {
+                  "key": "items[1][quantity]",
+                  "value": "2",
+                  "type": "text",
+                  "uuid": "ea985278-3b19-4c52-9a92-24340d77cf9b"
+                },
+                {
+                  "key": "items[1][price]",
+                  "value": "85",
+                  "type": "text",
+                  "uuid": "60255ba0-9585-4da3-8bad-18af18cd2e6c"
+                },
+                {
+                  "key": "payment_method_id",
+                  "value": "2",
+                  "description": "1 for Apple Pay, 2 for creditcard",
+                  "type": "text",
+                  "uuid": "4112d6b3-bd02-4939-ab4f-b9b3fcb2c347"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{local}}/order/checkout",
+              "host": [
+                "{{local}}"
+              ],
+              "path": [
+                "order",
+                "checkout"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Payment Successful Status",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "order_id",
+                  "value": "1",
+                  "type": "text",
+                  "uuid": "65446d6f-8494-4c21-937b-23aa9a536fe0"
+                },
+                {
+                  "key": "reference",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "bfc479af-1f46-4a54-a20b-e23d18849323"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{local}}/order/successful",
+              "host": [
+                "{{local}}"
+              ],
+              "path": [
+                "order",
+                "successful"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Payment  Failed Status",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "order_id",
+                  "value": "1",
+                  "type": "text",
+                  "uuid": "65446d6f-8494-4c21-937b-23aa9a536fe0"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{local}}/order/failed",
+              "host": [
+                "{{local}}"
+              ],
+              "path": [
+                "order",
+                "failed"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{local}}/order/destroy/1",
+              "host": [
+                "{{local}}"
+              ],
+              "path": [
+                "order",
+                "destroy",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "local",
+      "value": ""
+    },
+    {
+      "key": "serve",
+      "value": ""
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "default"
+    }
+  ]
+}
